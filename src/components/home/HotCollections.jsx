@@ -6,7 +6,7 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import OwlCarousel from "react-owl-carousel";
 import Skeleton from "../UI/Skeleton";
 
-const HotCollections = () => {
+const HotCollections = ({ width, height, borderRadius }) => {
 
   const [collections, setCollections] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +27,11 @@ const HotCollections = () => {
       const timer = setTimeout(() => {
         setIsLoading(true);
       }, 5000)
+      // putting 5s so its more exaggerated
 
+      // **I tried using the code you put in the channel, however, it just infinitely had the loading state on the page instead of going away
+
+      // setIsLoading(true);
       fetchData();
 
       return () => clearTimeout(timer)
@@ -73,7 +77,11 @@ const HotCollections = () => {
               <div className="nft_coll">
                 <div className="nft_wrap">
                   <Link to="/item-details">
+                  { isLoading ? (
+                    <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                  ): (
                     <img src={ nft ? nft.nftImage : ''} className="lazy img-fluid" alt="" />
+                  )}
                   </Link>
                 </div>
                 <div className="nft_coll_pp">
@@ -86,7 +94,7 @@ const HotCollections = () => {
                   <Link to="/explore">
                     <h4>{nft ? nft.title : ''}</h4>
                   </Link>
-                  <span className="skeleton-box">ERC-{nft ? nft.code : ''}</span>
+                  <span className="">ERC-{nft ? nft.code : ''}</span>
                 </div>
               </div>
             </div>
