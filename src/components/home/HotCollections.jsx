@@ -26,12 +26,8 @@ const HotCollections = ({ width, height, borderRadius }) => {
 
       const timer = setTimeout(() => {
         setIsLoading(true);
-      }, 5000)
-      // putting 5s so its more exaggerated
+      }, 1000)
 
-      // **I tried using the code you put in the channel, however, it just infinitely had the loading state on the page instead of going away
-
-      // setIsLoading(true);
       fetchData();
 
       return () => clearTimeout(timer)
@@ -86,15 +82,28 @@ const HotCollections = ({ width, height, borderRadius }) => {
                 </div>
                 <div className="nft_coll_pp">
                   <Link to="/author">
+                  { isLoading ? (
+                    <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                  ): (
                     <img className="lazy pp-coll" src={nft ? nft.authorImage : ''} alt="" />
+                  )}
+
                   </Link>
                   <i className="fa fa-check"></i>
                 </div>
                 <div className="nft_coll_info">
                   <Link to="/explore">
-                    <h4>{nft ? nft.title : ''}</h4>
+                  { isLoading? (
+                    <Skeleton width={width} height={height} borderRadius={borderRadius} /> 
+                  ) : (
+                    <h4>{nft ? nft.title : 'skeleton-box'}</h4>
+                  )}
                   </Link>
-                  <span className="">ERC-{nft ? nft.code : ''}</span>
+                  { isLoading? (
+                    <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                  ) : (
+                    <span className="">ERC-{nft ? nft.code : ''}</span>
+                  )}
                 </div>
               </div>
             </div>
