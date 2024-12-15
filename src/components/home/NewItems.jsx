@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
@@ -7,28 +7,34 @@ import OwlCarousel from "react-owl-carousel";
 import Skeleton from "../UI/Skeleton";
 
 const NewItems = ({ width, height, borderRadius }) => {
-
   const [newItems, setNewItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems");
-        setNewItems(res.data)
+        const res = await axios.get(
+          "https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems"
+        );
+        setNewItems(res.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching new items:", error);
+        setError("Failed to load items. Please try again later.");
+        setIsLoading(false);
       }
-      catch (error) {
-        console.log("Error.", error)
-      }
-      finally {
-        setIsLoading(false)
-      }
-    }
+    };
+
+    const timer = setTimeout(() => {
+      setIsLoading(true);
+    }, 1000);
+
     fetchData();
+
+    return () => clearTimeout(timer);
   }, []);
-
-
-
 
   const options = {
     loop: true,
@@ -36,20 +42,19 @@ const NewItems = ({ width, height, borderRadius }) => {
     nav: true,
     dots: false,
     responsive: {
-      0: {
-        items: 1,
-        nav: true,
-      },
-      600: {
-        items: 2,
-        nav: true,
-      },
-      1000: {
-        items: 4,
-        nav: true,
-      },
-    },
+      0: { items: 1 },
+      600: { items: 2 },
+      1000: { items: 4 }
+    }
   };
+
+  if (error) {
+    return (
+      <div className="container">
+        <div className="text-center py-4 text-red-600">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <section id="section-items" className="no-bottom">
@@ -61,8 +66,10 @@ const NewItems = ({ width, height, borderRadius }) => {
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
-            <OwlCarousel className="owl-theme" {...options}>
-              {newItems.map((item, index) => (
+          <OwlCarousel className="owl-theme" {...options}>
+            {new Array(4).fill(0).map((_, index) => {
+              const item = newItems[index];
+              return (
                 <div className="item" key={index}>
                   <div className="nft__item">
                     <div className="author_list_pp">
@@ -72,12 +79,18 @@ const NewItems = ({ width, height, borderRadius }) => {
                         data-bs-placement="top"
                         title="Creator: Monica Lucas"
                       >
-                        { isLoading ? (
-                          <Skeleton width={width} height={'50px'} borderRadius={'50%'} />
+                        {isLoading ? (
+                          <Skeleton width="50px" height="50px" borderRadius="50%" />
                         ) : (
-                          <img className="lazy" src={item.authorImage} alt="" />
+                          <>
+                            <img 
+                              className="lazy" 
+                              src={item ? item.authorImage : ''} 
+                              alt={`Creator: ${item ? item.author : 'Unknown'}`}
+                            />
+                            <i className="fa fa-check"></i>
+                          </>
                         )}
-                        <i className="fa fa-check"></i>
                       </Link>
                     </div>
                     <div className="de_countdown">5h 30m 32s</div>
@@ -100,47 +113,45 @@ const NewItems = ({ width, height, borderRadius }) => {
                           </div>
                         </div>
                       </div>
-
-                      <Link to="/item-details">
-                      { isLoading ? (
-                        
-                        <Skeleton width={width} height={'150px'} borderRadius={borderRadius} />
-                      ) : (
-                        <img
-                          src={item.nftImage}
-                          className="lazy nft__item_preview"
-                          alt=""
-                        />
-                      )}
+                      <Link to={`/item-details/${item.nftId}`}>
+                        {isLoading ? (
+                          <Skeleton width="100%" height="200px" borderRadius={borderRadius} />
+                        ) : (
+                          <img
+                            src={item ? item.nftImage : ''}
+                            className="lazy nft__item_preview"
+                            alt={item ? item.title : 'NFT Item'}
+                          />
+                        )}
                       </Link>
                     </div>
                     <div className="nft__item_info">
-                      <Link to="/item-details">
-                      { isLoading ? (
-                        <Skeleton width={width} height={height} borderRadius={borderRadius} />
-                      ) : (
-                        <h4>{item.title}</h4>
-                      )}
+                    <Link to={`/item-details/${item.nftId}`}>
+                        {isLoading ? (
+                          <Skeleton width="80%" height="24px" borderRadius={borderRadius} />
+                        ) : (
+                          <h4>{item ? item.title : ''}</h4>
+                        )}
                       </Link>
-                      { isLoading ? (
-                        <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                      {isLoading ? (
+                        <Skeleton width="60%" height="20px" borderRadius={borderRadius} />
                       ) : (
-                        <div className="nft__item_price">{item.price}</div>
+                        <div className="nft__item_price">{item ? item.price : ''} ETH</div>
                       )}
-                      { isLoading ? (
-                        
-                      <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                      {isLoading ? (
+                        <Skeleton width="40%" height="20px" borderRadius={borderRadius} />
                       ) : (
                         <div className="nft__item_like">
-                        <i className="fa fa-heart"></i>
-                        <span>{item.likes}</span>
-                      </div>
+                          <i className="fa fa-heart"></i>
+                          <span>{item ? item.likes : ''}</span>
+                        </div>
                       )}
                     </div>
                   </div>
                 </div>
-              ))}
-            </OwlCarousel>
+              );
+            })}
+          </OwlCarousel>
         </div>
       </div>
     </section>

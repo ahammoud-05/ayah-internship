@@ -1,13 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import EthImage from "../images/ethereum.svg";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import AuthorImage from "../images/author_thumbnail.jpg";
 import nftImage from "../images/nftImage.jpg";
+import axios from "axios";
 
 const ItemDetails = () => {
+
+  const { nftId } = useParams();
+  const [nft, setNft] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const res = await axios.get(
+          "https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems"
+        );
+        const nftItem = res.data.find((item) => item.nftId === parseInt(nftId));
+        setNft(nftItem);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [nftId]);
+
 
   return (
     <div id="wrapper">
@@ -18,14 +43,14 @@ const ItemDetails = () => {
             <div className="row">
               <div className="col-md-6 text-center">
                 <img
-                  src={nftImage}
+                  src={nft.nftImage}
                   className="img-fluid img-rounded mb-sm-30 nft-image"
                   alt=""
                 />
               </div>
               <div className="col-md-6">
                 <div className="item_info">
-                  <h2>Rainbow Style #194</h2>
+                  <h2>{nft.title} #194</h2>
 
                   <div className="item_info_counts">
                     <div className="item_info_views">
@@ -48,7 +73,7 @@ const ItemDetails = () => {
                       <div className="item_author">
                         <div className="author_list_pp">
                           <Link to="/author">
-                            <img className="lazy" src={AuthorImage} alt="" />
+                            <img className="lazy" src={nft.authorImage} alt="" />
                             <i className="fa fa-check"></i>
                           </Link>
                         </div>
