@@ -5,6 +5,7 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import OwlCarousel from "react-owl-carousel";
 import Skeleton from "../UI/Skeleton";
+import Countdown from "../Countdown";
 
 const NewItems = ({ width, height, borderRadius }) => {
   const [newItems, setNewItems] = useState([]);
@@ -56,6 +57,8 @@ const NewItems = ({ width, height, borderRadius }) => {
     );
   }
 
+
+
   return (
     <section id="section-items" className="no-bottom">
       <div className="container">
@@ -67,8 +70,7 @@ const NewItems = ({ width, height, borderRadius }) => {
             </div>
           </div>
           <OwlCarousel className="owl-theme" {...options}>
-            {new Array(4).fill(0).map((_, index) => {
-              const item = newItems[index];
+            {newItems.map((item, index) => {
               return (
                 <div className="item" key={index}>
                   <div className="nft__item">
@@ -93,8 +95,7 @@ const NewItems = ({ width, height, borderRadius }) => {
                         )}
                       </Link>
                     </div>
-                    <div className="de_countdown">5h 30m 32s</div>
-
+                    {item.expiryDate ? <Countdown expiryDate={item.expiryDate} /> : null}
                     <div className="nft__item_wrap">
                       <div className="nft__item_extra">
                         <div className="nft__item_buttons">
@@ -127,6 +128,7 @@ const NewItems = ({ width, height, borderRadius }) => {
                     </div>
                     <div className="nft__item_info">
                     <Link to={`/item-details/${item.nftId}`}>
+                      
                         {isLoading ? (
                           <Skeleton width="80%" height="24px" borderRadius={borderRadius} />
                         ) : (
