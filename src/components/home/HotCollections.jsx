@@ -74,7 +74,7 @@ const HotCollections = ({ width, height, borderRadius }) => {
                 <div className="nft_wrap">
                   <Link to="/item-details">
                   { isLoading ? (
-                    <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                    <Skeleton width={width} height={'80%'} borderRadius={borderRadius} />
                   ): (
                     <img src={ nft ? nft.nftImage : ''} className="lazy img-fluid" alt="" />
                   )}
@@ -83,7 +83,7 @@ const HotCollections = ({ width, height, borderRadius }) => {
                 <div className="nft_coll_pp">
                   <Link to="/author">
                   { isLoading ? (
-                    <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                    <Skeleton width={width} height={'60px'} borderRadius={'50%'} />
                   ): (
                     <img className="lazy pp-coll" src={nft ? nft.authorImage : ''} alt="" />
                   )}
@@ -94,13 +94,13 @@ const HotCollections = ({ width, height, borderRadius }) => {
                 <div className="nft_coll_info">
                   <Link to="/explore">
                   { isLoading? (
-                    <Skeleton width={width} height={height} borderRadius={borderRadius} /> 
+                    <Skeleton width={'80%'} height={height} borderRadius={borderRadius} /> 
                   ) : (
                     <h4>{nft ? nft.title : 'skeleton-box'}</h4>
                   )}
                   </Link>
                   { isLoading? (
-                    <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                    <Skeleton width={'40%'} height={height} borderRadius={borderRadius} />
                   ) : (
                     <span className="">ERC-{nft ? nft.code : ''}</span>
                   )}
