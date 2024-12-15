@@ -5,7 +5,7 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import OwlCarousel from "react-owl-carousel";
 import Skeleton from "../UI/Skeleton";
-import Countdown from "../Countdown";
+import Countdown from "../UI/Countdown";
 
 const NewItems = ({ width, height, borderRadius }) => {
   const [newItems, setNewItems] = useState([]);
