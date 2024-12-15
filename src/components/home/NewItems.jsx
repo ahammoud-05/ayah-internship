@@ -9,27 +9,22 @@ import Skeleton from "../UI/Skeleton";
 const NewItems = ({ width, height, borderRadius }) => {
 
   const [newItems, setNewItems] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get("https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems");
         setNewItems(res.data)
-        // setIsLoading(false)
       }
       catch (error) {
         console.log("Error.", error)
-        // setIsLoading(false)
+      }
+      finally {
+        setIsLoading(false)
       }
     }
-
-    // const timer = setTimeout(() => {
-    //   setIsLoading(true)
-    // }, 1000)
     fetchData();
-
-    // return () => clearTimeout(timer)
   }, []);
 
 
@@ -77,10 +72,10 @@ const NewItems = ({ width, height, borderRadius }) => {
                         data-bs-placement="top"
                         title="Creator: Monica Lucas"
                       >
-                        { item && item.authorImage ? (
-                          <img className="lazy" src={item.authorImage} alt="" />
-                        ) : (
+                        { isLoading ? (
                           <Skeleton width={width} height={'50px'} borderRadius={'50%'} />
+                        ) : (
+                          <img className="lazy" src={item.authorImage} alt="" />
                         )}
                         <i className="fa fa-check"></i>
                       </Link>
@@ -107,37 +102,39 @@ const NewItems = ({ width, height, borderRadius }) => {
                       </div>
 
                       <Link to="/item-details">
-                      { item  && item.nftImage ? (
+                      { isLoading ? (
+                        
+                        <Skeleton width={width} height={'150px'} borderRadius={borderRadius} />
+                      ) : (
                         <img
                           src={item.nftImage}
                           className="lazy nft__item_preview"
                           alt=""
                         />
-                      ) : (
-                        <Skeleton width={width} height={'150px'} borderRadius={borderRadius} />
                       )}
                       </Link>
                     </div>
                     <div className="nft__item_info">
                       <Link to="/item-details">
-                      { item && item.title ? (
-                        <h4>{item.title}</h4>
-                      ) : (
+                      { isLoading ? (
                         <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                      ) : (
+                        <h4>{item.title}</h4>
                       )}
                       </Link>
-                      { item && item.price ? (
-                        <div className="nft__item_price">{item.price}</div>
-                      ) : (
+                      { isLoading ? (
                         <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                      ) : (
+                        <div className="nft__item_price">{item.price}</div>
                       )}
-                      { item && item.likes ? (
+                      { isLoading ? (
+                        
+                      <Skeleton width={width} height={height} borderRadius={borderRadius} />
+                      ) : (
                         <div className="nft__item_like">
                         <i className="fa fa-heart"></i>
                         <span>{item.likes}</span>
                       </div>
-                      ) : (
-                        <Skeleton width={width} height={height} borderRadius={borderRadius} />
                       )}
                     </div>
                   </div>
