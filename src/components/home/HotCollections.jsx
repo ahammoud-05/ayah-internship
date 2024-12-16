@@ -66,13 +66,12 @@ const HotCollections = ({ width, height, borderRadius }) => {
             </div>
           </div>
           <OwlCarousel className="owl-theme" {...options}>
-          {new Array(4).fill(0).map((_, index) => {
-              const nft = collections[index];
+          {collections.map((nft, index) => {
             return (
               <div className="item" key={index}>
               <div className="nft_coll">
                 <div className="nft_wrap">
-                  <Link to="/item-details">
+                  <Link to={`/item-details/${nft.nftId}`}>
                   { isLoading ? (
                     <Skeleton width={width} height={'80%'} borderRadius={borderRadius} />
                   ): (
@@ -81,7 +80,7 @@ const HotCollections = ({ width, height, borderRadius }) => {
                   </Link>
                 </div>
                 <div className="nft_coll_pp">
-                  <Link to="/author">
+                  <Link to={`/author/${nft.authorId}`}>
                   { isLoading ? (
                     <Skeleton width={width} height={'60px'} borderRadius={'50%'} />
                   ): (

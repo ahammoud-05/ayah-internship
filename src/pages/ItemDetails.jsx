@@ -97,7 +97,7 @@ const ItemDetails = ({ width, height, borderRadius }) => {
                           <Skeleton width="50px" height="50px" borderRadius="50%" />
                         ) : (
                           <div className="author_list_pp">
-                            <Link to="/author">
+                            <Link to={`/author/${nft.ownerId}`}>
                               <img className="lazy" src={nft.ownerImage} alt="" />
                               <i className="fa fa-check"></i>
                             </Link>
@@ -108,7 +108,7 @@ const ItemDetails = ({ width, height, borderRadius }) => {
                           <Skeleton width={width} height={height} borderRadius={borderRadius} />
                         ) : (
                           <div className="author_list_info">
-                          <Link to="/author">{nft.ownerName}</Link>
+                          <Link to={`/author/${nft.ownerId}`}>{nft.ownerName}</Link>
                         </div>
                         )}
                       </div>
@@ -124,7 +124,7 @@ const ItemDetails = ({ width, height, borderRadius }) => {
                           { isLoading ? (
                             <Skeleton width="50px" height="50px" borderRadius="50%" />
                           ) : (
-                            <Link to="/author">
+                            <Link to={`/author/${nft.creatorId}`}>
                             <img className="lazy" src={nft.creatorImage} alt="" />
                             <i className="fa fa-check"></i>
                           </Link>
@@ -134,7 +134,7 @@ const ItemDetails = ({ width, height, borderRadius }) => {
                           { isLoading ? (
                             <Skeleton width={width} height={height} borderRadius={borderRadius} />
                           ) : (
-                            <Link to="/author">{nft.creatorName}</Link>
+                            <Link to={`/author/${nft.creatorId}`}>{nft.creatorName}</Link>
                           )}
                         </div>
                       </div>
