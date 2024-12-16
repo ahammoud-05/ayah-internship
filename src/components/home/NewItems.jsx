@@ -6,8 +6,19 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import OwlCarousel from "react-owl-carousel";
 import Skeleton from "../UI/Skeleton";
 import Countdown from "../UI/Countdown";
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 const NewItems = ({ width, height, borderRadius }) => {
+
+  useEffect(() => {
+      Aos.init({
+        easing: 'ease-in-out',
+        duration: 1000,
+      });
+    }, [])
+
+
   const [newItems, setNewItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -65,14 +76,14 @@ const NewItems = ({ width, height, borderRadius }) => {
         <div className="row">
           <div className="col-lg-12">
             <div className="text-center">
-              <h2>New Items</h2>
+              <h2 data-aos = "fade" data-aos-delay = "100" data-aot-duration = "200">New Items</h2>
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
-          <OwlCarousel className="owl-theme" {...options}>
+          <OwlCarousel className="owl-theme" {...options} data-aos = "fade" data-aos-delay = "100" data-aot-duration = "200">
             {newItems.map((item, index) => {
               return (
-                <div className="item" key={index}>
+                <div className="item" key={index} data-aos = "fade" data-aos-delay = "" data-aot-duration = "200">
                   <div className="nft__item">
                     <div className="author_list_pp">
                       <Link

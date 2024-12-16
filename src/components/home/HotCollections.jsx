@@ -5,8 +5,17 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import OwlCarousel from "react-owl-carousel";
 import Skeleton from "../UI/Skeleton";
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 const HotCollections = ({ width, height, borderRadius }) => {
+
+  useEffect(() => {
+      Aos.init({
+        easing: 'ease-in-out',
+        duration: 1500,
+      });
+    }, [])
 
   const [collections, setCollections] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,7 +65,7 @@ const HotCollections = ({ width, height, borderRadius }) => {
      
 
   return (
-    <section id="section-collections" className="no-bottom">
+    <section id="section-collections" className="no-bottom" data-aos = "fade" data-aos-delay = "100" data-aot-duration = "200">
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
