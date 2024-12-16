@@ -3,13 +3,31 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Countdown from '../UI/Countdown';
 import Skeleton from "../UI/Skeleton";
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 const ExploreItems = () => {
 
+  useEffect(() => {
+            Aos.init({
+              easing: 'ease-in-out',
+              duration: 800,
+            });
+          }, [])
+
   const [exploreItems, setExploreItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingOnMount, setLoadingOnMount] = useState(true)
   const [visibleItems, setvisibleItems] = useState(8);
   const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoadingOnMount(false);
+    }, 1000);
+
+    return () => clearTimeout(timer)
+  }, []);
 
   useEffect(() => {
     const fetchData = async (filterSelected) => {
@@ -18,19 +36,16 @@ const ExploreItems = () => {
         const filterOption = filterSelected ? `?filter=${filterSelected}` : "";
         const res = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/explore${filterOption}`)
         setExploreItems(res.data)
-      }
-      catch (error) {
+        setIsLoading(false)
+      } catch (error) {
         console.log("Error.", error)
-        
-      }
-      finally {
         setIsLoading(false)
       }
     }
 
     fetchData(filter);
-    
-  }, [filter])
+
+  }, [filter]);
 
   const changeFilter = (event) => {
     setFilter(event.target.value)
@@ -43,7 +58,7 @@ const ExploreItems = () => {
 
   return (
     <>
-      <div>
+      <div data-aos = "fade" data-aos-delay = "100" data-aot-duration = "200">
         <select id="filter-items" defaultValue="" onChange={changeFilter}>
           <option value="">Default</option>
           <option value="price_low_to_high">Price, Low to High</option>
@@ -64,7 +79,7 @@ const ExploreItems = () => {
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
               >
-                { isLoading ? (
+                { isLoading || loadingOnMount ? (
                   <Skeleton width="100%" height="50px" borderRadius="50px" />
                 ) : (
                   <img className="lazy" src={item.authorImage} alt="" />
@@ -72,7 +87,7 @@ const ExploreItems = () => {
                 <i className="fa fa-check"></i>
               </Link>
             </div>
-                { isLoading ? (
+                { isLoading || loadingOnMount ? (
                  null
                 ) : (
                   <> {item.expiryDate ? <Countdown expiryDate={item.expiryDate} /> : null} </>
@@ -98,7 +113,7 @@ const ExploreItems = () => {
                 </div>
               </div>
               <Link to={`/item-details/${item.nftId}`}>
-              { isLoading ? (
+              { isLoading || loadingOnMount ? (
                 <Skeleton width="100%" height="220px" borderRadius="2px" />
               ) : (
                 <img src={item.nftImage} className="lazy nft__item_preview" alt="" />
@@ -107,14 +122,14 @@ const ExploreItems = () => {
             </div>
             <div className="nft__item_info">
               <Link to={`/item-details/${item.nftId}`}>
-              { isLoading ? (
+              { isLoading || loadingOnMount ? (
                 <Skeleton width="80%" height="20px" borderRadius="2px" />
               ) : (
                 <h4>{item.title}</h4>
               )}
                 
               </Link>
-              { isLoading ? (
+              { isLoading || loadingOnMount ? (
                 <Skeleton width="50%" height="20px" borderRadius="2px" />
               ) : (
                 <div className="nft__item_price">{item.price} ETH</div>
@@ -122,7 +137,7 @@ const ExploreItems = () => {
               
               <div className="nft__item_like">
                 <i className="fa fa-heart"></i>
-                { isLoading ? (
+                { isLoading || loadingOnMount ? (
                   null
                 ) : (
                   <span>{item.likes}</span>

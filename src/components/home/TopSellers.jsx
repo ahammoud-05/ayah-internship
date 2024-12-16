@@ -2,8 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Skeleton from "../UI/Skeleton";
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 const TopSellers = ({ width, height, borderRadius }) => {
+
+  useEffect(() => {
+        Aos.init({
+          easing: 'ease-in-out',
+          duration: 1500,
+        });
+      }, [])
 
   const [topSellers, setTopSellers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,16 +37,16 @@ const TopSellers = ({ width, height, borderRadius }) => {
     return () => clearTimeout(timer)
   }, [])
   return (
-    <section id="section-popular" className="pb-5">
+    <section id="section-popular" className="pb-5" >
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            <div className="text-center">
+            <div className="text-center" data-aos = "fade" data-aos-delay = "100" data-aot-duration = "200">
               <h2>Top Sellers</h2>
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
-          <div className="col-md-12">
+          <div className="col-md-12" data-aos = "fade" data-aos-delay = "100" data-aot-duration = "200">
             <ol className="author_list">
               {topSellers.map((seller, index) => (
                 <li key={index}>
