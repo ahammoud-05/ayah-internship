@@ -42,7 +42,7 @@ const TopSellers = ({ width, height, borderRadius }) => {
               {topSellers.map((seller, index) => (
                 <li key={index}>
                   <div className="author_list_pp">
-                    <Link to="/author">
+                    <Link to={`/author/${seller.authorId}`}>
                     { isLoading ? (
                       <Skeleton width="50px" height="50px" borderRadius="50%" />
                     ) : (
@@ -59,7 +59,7 @@ const TopSellers = ({ width, height, borderRadius }) => {
                     { isLoading ? (
                       <Skeleton width="80%" height="20px" borderRadius="2px" />
                     ) : (
-                      <Link to="/author">{seller.authorName}</Link>
+                      <Link to={`/author/${seller.authorId}`}>{seller.authorName}</Link>
                     )}
                     { isLoading ? (
                       <Skeleton width="25%" height="20px" borderRadius="2px" />

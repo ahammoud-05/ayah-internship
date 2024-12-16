@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthorImage from "../../images/author_thumbnail.jpg";
-import nftImage from "../../images/nftImage.jpg";
 import axios from "axios";
 import Countdown from '../UI/Countdown';
 import Skeleton from "../UI/Skeleton";
@@ -62,7 +60,7 @@ const ExploreItems = () => {
           <div className="nft__item">
             <div className="author_list_pp">
               <Link
-                to="/author"
+                to={`/author/${item.authorId}`}
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
               >
@@ -99,7 +97,7 @@ const ExploreItems = () => {
                   </div>
                 </div>
               </div>
-              <Link to="/item-details">
+              <Link to={`/item-details/${item.nftId}`}>
               { isLoading ? (
                 <Skeleton width="100%" height="220px" borderRadius="2px" />
               ) : (
@@ -108,7 +106,7 @@ const ExploreItems = () => {
               </Link>
             </div>
             <div className="nft__item_info">
-              <Link to="/item-details">
+              <Link to={`/item-details/${item.nftId}`}>
               { isLoading ? (
                 <Skeleton width="80%" height="20px" borderRadius="2px" />
               ) : (
